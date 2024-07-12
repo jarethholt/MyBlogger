@@ -2,6 +2,39 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="text-center">
+    <h1>MyBlogger</h1>
+</div>
 
-Welcome to your new app.
+<div class="row">
+    @if (Blogs.Any())
+    {
+        @foreach (var blog in Blogs)
+        {
+            <div class="card m-2" style="width: 18rem">
+                @if (!string.IsNullOrWhiteSpace(blog.ImageFileName))
+                {
+                    <img class="card-img-top" src=@($"~/img/{blog.ImageFileName}") />
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@blog.Header</h5>
+                    <p class="card-text">@blog.Text</p>
+                </div>
+                <p class="card-footer">@blog.PostedAt</p>
+            </div>
+        }
+    }
+</div>
+
+<div class="row">
+    <EditForm Enhance FormName="NewPost" Model="NewPost" OnSubmit="CreateNewPost">
+        <label for="Header" class="form-label">Header</label>
+        <InputText id="Header" DisplayName="Header" @bind-Value="NewPost!.Header" class="form-control" />
+        <label for="Text" class="form-label">Text</label>
+        <InputTextArea id="Text" DisplayName="Text" @bind-Value="NewPost!.Text" class="form-control" />
+        <label for="Image" class="form-label">Image</label>
+        <InputFile class="form-control" @bind-Value="UploadedImage" />
+
+        <button type="submit" class="btn btn-success" value="Save" />
+    </EditForm>
+</div>
